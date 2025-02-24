@@ -1,0 +1,31 @@
+<div class="hv-wrapper">
+  <ng-template #hierarchyNodeTemplate let-node>
+    @if(!node?.items?.length) {
+    <p>{{ node.uid }}</p>
+    } @else {
+    <div class="hv-item">
+      <div class="hv-item-parent">
+        <p>{{ node.uid }}</p>
+      </div>
+      <div class="hv-item-children">
+        @for(child of node.items; track $index) {
+        <div class="hv-item-child">
+          <ng-container
+            *ngTemplateOutlet="
+              hierarchyNodeTemplate;
+              context: { $implicit: child }
+            "
+          ></ng-container>
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </ng-template>
+
+  @for(node of hierarchy; track $index) {
+  <ng-container
+    *ngTemplateOutlet="hierarchyNodeTemplate; context: { $implicit: node }"
+  ></ng-container>
+  }
+</div>
