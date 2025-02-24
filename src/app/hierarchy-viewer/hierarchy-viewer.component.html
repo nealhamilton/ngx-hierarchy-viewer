@@ -1,10 +1,24 @@
 <div class="hv-wrapper">
   <ng-template #hierarchyNodeTemplate let-node>
-    @if(!node?.items?.length) {
-    <p>{{ node.uid }}</p>
-    } @else {
+    @if(!node?.items?.length ){ @if (showAddFor === node.uid) {
     <div class="hv-item">
       <div class="hv-item-parent">
+        <p>{{ node.uid }}</p>
+      </div>
+      <div class="hv-item-children">
+        <div class="hv-item-child" (click)="addChildTo(node)">
+          <p>+</p>
+        </div>
+      </div>
+    </div>
+
+    } @else {
+    <p (mouseenter)="showAddFor = node.uid">
+      {{ node.uid }}
+    </p>
+    } } @else {
+    <div class="hv-item" (mouseleave)="showAddFor = null">
+      <div class="hv-item-parent" (mouseenter)="showAddFor = node.uid">
         <p>{{ node.uid }}</p>
       </div>
       <div class="hv-item-children">
@@ -16,6 +30,11 @@
               context: { $implicit: child }
             "
           ></ng-container>
+        </div>
+        } @if (showAddFor === node.uid) {
+
+        <div class="hv-item-child" (click)="addChildTo(node)">
+          <p>+</p>
         </div>
         }
       </div>

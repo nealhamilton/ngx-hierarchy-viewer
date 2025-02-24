@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, TemplateRef } from '@angular/core';
 
 export type HierarchyNode = {
   uid: string;
@@ -16,4 +16,17 @@ export type HierarchyNode = {
 })
 export class HierarchyViewerComponent {
   @Input() hierarchy: HierarchyNode[] = [];
+  @Input() nodeTemplateRef?: TemplateRef<any>;
+
+  showAddFor: string | null = null;
+
+  addChildTo(node: HierarchyNode): void {
+    node.items = node.items ?? [];
+
+    node.items.push({
+      uid: Math.random().toString(),
+      pid: node.uid,
+      depth: node.depth + 1,
+    });
+  }
 }
